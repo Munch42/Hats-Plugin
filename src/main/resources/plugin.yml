@@ -1,0 +1,9 @@
+name: Hats
+version: ${project.version}
+main: me.munch42.hats.Hats
+api-version: 1.13
+authors: [Munch42]
+
+commands:
+  hats:
+    description: This command opens up the hats GUI allowing you to select a hat to wear!
