@@ -55,7 +55,13 @@ public class HatGUIListener implements Listener {
         UUID playerUUID = p.getUniqueId();
 
         BaseHatGUI.openInventories.remove(playerUUID);
-        Hats.playerPages.remove(playerUUID);
+        if(p.getOpenInventory() != null){
+            if(!p.getOpenInventory().getTitle().equals("Hats")){
+                Hats.playerPages.remove(playerUUID);
+            }
+        } else {
+            Hats.playerPages.remove(playerUUID);
+        }
     }
 
     @EventHandler

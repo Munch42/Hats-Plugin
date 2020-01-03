@@ -90,67 +90,62 @@ public final class Hats extends JavaPlugin {
             hatGUIS.put(i, gui);
         }
 
-        int counter = 0;
-        int pageCounter = 1;
-        int pageNumCounter = 0;
-        for(int i = 1; i <= hatGUIS.size(); i++){
-            HatGUI gui = hatGUIS.get(i);
-            for(String key : hats.getKeys(false)){
-                if(counter > 44 * pageCounter){
-                    break;
-                }
-                ItemStack item = new ItemStack(Material.getMaterial(hats.getString(key + ".material")));
-                ItemMeta meta = item.getItemMeta();
-                if(!hats.getString(key + ".displayName").equals("")){
-                    meta.setDisplayName(ChatUtils.parseColourCodes(hats.getString(key + ".displayName")));
-                }
+        // Problem may be that it goes through on 1 page and then loops through the same items again for the second page.
 
-                if(!hats.getString( key + ".lore").equals("")){
-                    ArrayList<String> lore = new ArrayList<>();
-                    String[] loreList = hats.getString(key + ".lore").split(";");
-                    for(String loreString : loreList){
-                        lore.add(ChatUtils.parseColourCodes(loreString));
+        int hatsDone = 0;
+        int onPage = 1;
+        HatGUI gui = hatGUIS.get(onPage);
+        for(String key : hats.getKeys(false)){
+
+            if(hatsDone > 44){
+                onPage++;
+                hatsDone = 0;
+                gui = hatGUIS.get(onPage);
+            }
+
+            ItemStack item = new ItemStack(Material.getMaterial(hats.getString(key + ".material")));
+            ItemMeta meta = item.getItemMeta();
+            if(!hats.getString(key + ".displayName").equals("")){
+                meta.setDisplayName(ChatUtils.parseColourCodes(hats.getString(key + ".displayName")));
+            }
+
+            if(!hats.getString( key + ".lore").equals("")){
+                ArrayList<String> lore = new ArrayList<>();
+                String[] loreList = hats.getString(key + ".lore").split(";");
+                for(String loreString : loreList){
+                    lore.add(ChatUtils.parseColourCodes(loreString));
+                }
+                meta.setLore(lore);
+            }
+
+            item.setItemMeta(meta);
+
+            gui.setItem(hatsDone, item, player -> {
+                if(player.getInventory().getHelmet() != null){
+                    if(!getConfig().getString("wearingHatMessage").equals("")){
+                        String message = getConfig().getString("wearingHatMessage");
+                        message = ChatUtils.parseColourCodes(message);
+                        player.sendMessage(message);
                     }
-                    meta.setLore(lore);
+                    return;
                 }
-
-                item.setItemMeta(meta);
-                gui.setItem(counter - (pageNumCounter * 45), item, player -> {
-                    if(player.getInventory().getHelmet() != null){
-                        if(!getConfig().getString("wearingHatMessage").equals("")){
-                            String message = getConfig().getString("wearingHatMessage");
+                if(!hats.getString(key + ".permission").equals("")){
+                    if(player.hasPermission(hats.getString( key + ".permission"))){
+                        equipHelmet(item, player, key);
+                    } else {
+                        if(!getConfig().getString("noHatPerm").equals("")){
+                            String message = getConfig().getString("noHatPerm");
+                            message = message.replace("%perm%", hats.getString(key + ".permission"));
                             message = ChatUtils.parseColourCodes(message);
                             player.sendMessage(message);
                         }
-                        return;
                     }
-                    if(!hats.getString(key + ".permission").equals("")){
-                        if(player.hasPermission(hats.getString( key + ".permission"))){
-                            equipHelmet(item, player, key);
-                        } else {
-                            if(!getConfig().getString("noHatPerm").equals("")){
-                                String message = getConfig().getString("noHatPerm");
-                                message = message.replace("%perm%", hats.getString(key + ".permission"));
-                                message = ChatUtils.parseColourCodes(message);
-                                player.sendMessage(message);
-                            }
-                        }
-                    } else {
-                        equipHelmet(item, player, key);
-                    }
-                });
-                counter++;
-            }
-            pageCounter++;
-            pageNumCounter++;
+                } else {
+                    equipHelmet(item, player, key);
+                }
+            });
+            hatsDone++;
         }
-    }
-
-    private ArrayList<ItemStack> getAllItems(){
-        ArrayList<ItemStack> items = new ArrayList<>();
-
-
-        return items;
     }
 
     private void equipHelmet(ItemStack item, Player player, String key){
