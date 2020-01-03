@@ -48,20 +48,17 @@ public class HatGUI extends BaseHatGUI {
                 setItem(i, arrow, player -> {
                     // Go back a page
                     UUID puuid = player.getUniqueId();
-                    int page = Hats.playerPages.get(puuid);
-                    if(!((Hats.playerPages.get(puuid) - 1) <= 0)){
+                    int page;
+                    page = Hats.playerPages.get(puuid);
+                    if(!((page - 1) <= 0)){
                         page -= 1;
-                        Hats.playerPages.put(puuid, page);
-                        player.closeInventory();
-                        Hats.hatGUIS.get(page).open(player);
-                        Hats.playerPages.remove(puuid);
                     } else {
                         page = totalPages;
-                        Hats.playerPages.put(puuid, page);
-                        player.closeInventory();
-                        Hats.hatGUIS.get(page).open(player);
-                        Hats.playerPages.remove(puuid);
                     }
+                    Hats.playerPages.put(puuid, page);
+                    player.closeInventory();
+                    Hats.hatGUIS.get(page).open(player);
+                    Hats.playerPages.remove(puuid);
                 });
             } else if(i == invSize - 5){
                 ItemStack barrier = new ItemStack(Material.BARRIER,1);
@@ -83,20 +80,17 @@ public class HatGUI extends BaseHatGUI {
                 setItem(i, arrow, player -> {
                     // Go to next page
                     UUID puuid = player.getUniqueId();
-                    int page = Hats.playerPages.get(puuid);
-                    if(!((Hats.playerPages.get(puuid) + 1) > totalPages)){
+                    int page;
+                    page = Hats.playerPages.get(puuid);
+                    if(!((page + 1) > totalPages)){
                         page += 1;
-                        Hats.playerPages.put(puuid, page);
-                        player.closeInventory();
-                        Hats.hatGUIS.get(page).open(player);
-                        Hats.playerPages.remove(puuid);
                     } else {
                         page = 1;
-                        Hats.playerPages.put(puuid, page);
-                        player.closeInventory();
-                        Hats.hatGUIS.get(page).open(player);
-                        Hats.playerPages.remove(puuid);
                     }
+                    Hats.playerPages.put(puuid, page);
+                    player.closeInventory();
+                    Hats.hatGUIS.get(page).open(player);
+                    Hats.playerPages.remove(puuid);
                 });
             } else {
                 setItem(i, new ItemStack(Material.PURPLE_STAINED_GLASS_PANE, 1));
@@ -104,4 +98,5 @@ public class HatGUI extends BaseHatGUI {
 
         }
     }
+
 }

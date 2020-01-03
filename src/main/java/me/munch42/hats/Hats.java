@@ -5,7 +5,6 @@ import me.munch42.hats.inventories.HatGUI;
 import me.munch42.hats.listeners.HatGUIListener;
 import me.munch42.hats.listeners.PlayerJoinListener;
 import me.munch42.hats.utils.ChatUtils;
-import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -19,7 +18,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public final class Hats extends JavaPlugin {
 
@@ -78,9 +80,9 @@ public final class Hats extends JavaPlugin {
         }*/
 
         int totalHats = hats.getKeys(false).size();
-        int totalRows = (int) Math.ceil(totalHats / 9);
+        int totalRows = (int) Math.ceil((float) totalHats / 9);
         if(totalRows == 0){ totalRows = 1; }
-        int totalPages = (int) Math.ceil(totalRows / 5);
+        int totalPages = (int) Math.ceil((float) totalRows / 5);
         if(totalPages == 0){ totalPages = 1; }
 
         for(int i = 1; i <= totalPages; i++){
@@ -90,13 +92,13 @@ public final class Hats extends JavaPlugin {
 
         int counter = 0;
         int pageCounter = 1;
+        int pageNumCounter = 0;
         for(int i = 1; i <= hatGUIS.size(); i++){
             HatGUI gui = hatGUIS.get(i);
             for(String key : hats.getKeys(false)){
-                if(counter >= 44 * pageCounter){
+                if(counter > 44 * pageCounter){
                     break;
                 }
-
                 ItemStack item = new ItemStack(Material.getMaterial(hats.getString(key + ".material")));
                 ItemMeta meta = item.getItemMeta();
                 if(!hats.getString(key + ".displayName").equals("")){
@@ -113,7 +115,7 @@ public final class Hats extends JavaPlugin {
                 }
 
                 item.setItemMeta(meta);
-                gui.setItem(counter, item, player -> {
+                gui.setItem(counter - (pageNumCounter * 45), item, player -> {
                     if(player.getInventory().getHelmet() != null){
                         if(!getConfig().getString("wearingHatMessage").equals("")){
                             String message = getConfig().getString("wearingHatMessage");
@@ -140,8 +142,15 @@ public final class Hats extends JavaPlugin {
                 counter++;
             }
             pageCounter++;
-            continue;
+            pageNumCounter++;
         }
+    }
+
+    private ArrayList<ItemStack> getAllItems(){
+        ArrayList<ItemStack> items = new ArrayList<>();
+
+
+        return items;
     }
 
     private void equipHelmet(ItemStack item, Player player, String key){
