@@ -18,10 +18,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public final class Hats extends JavaPlugin {
 
@@ -168,6 +165,22 @@ public final class Hats extends JavaPlugin {
 
     public FileConfiguration getPlayersConfig() {
         return playersConfig;
+    }
+
+    public static <T> List<T> convertArrayToList(T array[])
+    {
+
+        // Create an empty List
+        List<T> list = new ArrayList<>();
+
+        // Iterate through the array
+        for (T t : array) {
+            // Add each element into the list
+            list.add(t);
+        }
+
+        // Return the converted List
+        return list;
     }
 
     public static Map<UUID, Integer> getPlayerPages() {
