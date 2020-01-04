@@ -24,6 +24,7 @@ public class HatGUI extends BaseHatGUI {
                     if(Hats.getPlugin().getPlayersConfig().getBoolean("players." + player.getUniqueId() + ".hat")){
                         player.getInventory().setHelmet(new ItemStack(Material.AIR));
                         Hats.getPlugin().getPlayersConfig().set("players." + player.getUniqueId() + ".hat", false);
+                        Hats.getPlugin().getPlayersConfig().set("players." + player.getUniqueId() + ".hatKey", "null");
                         Hats.getPlugin().saveConfig();
                         if(!Hats.getPlugin().getConfig().getString("hatRemoved").equals("")){
                             String message = Hats.getPlugin().getConfig().getString("hatRemoved");

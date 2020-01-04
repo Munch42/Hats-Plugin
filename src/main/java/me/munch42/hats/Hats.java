@@ -3,6 +3,7 @@ package me.munch42.hats;
 import me.munch42.hats.commands.HatsCommand;
 import me.munch42.hats.inventories.HatGUI;
 import me.munch42.hats.listeners.HatGUIListener;
+import me.munch42.hats.listeners.PlayerDeathListener;
 import me.munch42.hats.listeners.PlayerJoinListener;
 import me.munch42.hats.utils.ChatUtils;
 import org.bukkit.Bukkit;
@@ -61,6 +62,7 @@ public final class Hats extends JavaPlugin {
     private void loadListeners(){
         new HatGUIListener(this);
         new PlayerJoinListener(this);
+        new PlayerDeathListener(this);
     }
 
     private void loadCommands(){
@@ -149,6 +151,7 @@ public final class Hats extends JavaPlugin {
         player.getInventory().setHelmet(item);
         player.closeInventory();
         getPlayersConfig().set("players." + player.getUniqueId() + ".hat", true);
+        getPlayersConfig().set("players." + player.getUniqueId() + ".hatKey", key);
         saveConfig();
         if(!getConfig().getString("hatEquipMessage").equals("")){
             String message = getConfig().getString("hatEquipMessage");

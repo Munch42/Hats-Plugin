@@ -22,6 +22,7 @@ public class PlayerJoinListener implements Listener {
         if(!plugin.getPlayersConfig().contains("players." + event.getPlayer().getUniqueId())){
             plugin.getPlayersConfig().set("players." + event.getPlayer().getUniqueId() + ".name", event.getPlayer().getDisplayName());
             plugin.getPlayersConfig().set("players." + event.getPlayer().getUniqueId() + ".hat", false);
+            plugin.getPlayersConfig().set("players." + event.getPlayer().getUniqueId() + ".hatKey", "null");
             plugin.saveConfig();
         }
 
