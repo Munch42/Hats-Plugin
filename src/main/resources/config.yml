@@ -24,6 +24,67 @@ errorRemove: "You are not wearing a hat to remove."
 # This message will be sent when a player successfully removes their current hat. Set to "" to disable.
 hatRemoved: "You have successfully removed your hat!"
 
+# GUI Title. This will be the title of the GUI. If set to "" or null it will default to "Hats".
+guiTitle: "Hats"
+
+# Navigation Bar: These will be the bottom most bar of the /hats menu. In the displayName or lore use %totalPages% for the total pages and %page% for the current page.
+# There should always be 9 items under nav. If you want a slot to be blank just set the material to AIR and the rest to "" or null.
+# Format:
+# nav: This is the default node. DO NOT CHANGE THIS otherwise the plugin will not work.
+#   slotNum: Set this to the slot number between 1 and 9. So 1, 2, 3, 4, 5, 6, 7, 8 and 9.
+#     material: Set this to the item in all caps for example: PURPLE_STAINED_GLASS_PANE or AIR to set it to nothing
+#     displayName: Set this to the display name you want on the item. Set to "" to have the normal name.
+#     lore: Set this to a list of the lore you want. Every different line you want must be seperated by a ; ie. This is some great lore;This is really some great lore!. Set to "" to have no lore.
+#     job: Set this to either REMOVE, BACK, FORWARD, or CLOSE to set the action you want the item to have. Set to null if they have no action. They can only be used once. Description continued below.
+#     REMOVE is the button to remove a hat. BACK and FORWARD are their respective navigation button and CLOSE closes the menu.
+
+nav:
+  1:
+    material: REDSTONE_BLOCK
+    displayName: "Click to remove hat!"
+    lore: ""
+    job: REMOVE
+  2:
+    material: PURPLE_STAINED_GLASS_PANE
+    displayName: "Hats Menu"
+    lore: ""
+    job: null
+  3:
+    material: PURPLE_STAINED_GLASS_PANE
+    displayName: "Hats Menu"
+    lore: ""
+    job: null
+  4:
+    material: ARROW
+    displayName: "<< Previous Page"
+    lore: ""
+    job: BACK
+  5:
+    material: BARRIER
+    displayName: "Close Menu"
+    lore: "Page %page%/%totalPages%"
+    job: CLOSE
+  6:
+    material: ARROW
+    displayName: "Next Page >>"
+    lore: ""
+    job: FORWARD
+  7:
+    material: PURPLE_STAINED_GLASS_PANE
+    displayName: "Hats Menu"
+    lore: ""
+    job: null
+  8:
+    material: PURPLE_STAINED_GLASS_PANE
+    displayName: "Hats Menu"
+    lore: ""
+    job: null
+  9:
+    material: PURPLE_STAINED_GLASS_PANE
+    displayName: "Hats Menu"
+    lore: ""
+    job: null
+
 # Hats: These will be displayed in the /hats menu.
 # Format:
 # hats: This is the default node. DO NOT CHANGE THIS otherwise the plugin will not work.

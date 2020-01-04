@@ -72,11 +72,18 @@ public final class Hats extends JavaPlugin {
     private void loadGUIs(){
         // Each page can have a max of 6 rows. 1 row is reserved for navigation so 5 rows total of hats.
         ConfigurationSection hats = getConfig().getConfigurationSection("hats");
+        String title;
 
         /*for (String key : hats.getKeys(false))
         {
 
         }*/
+
+        if(!getConfig().getString("guiTitle").equals("")){
+            title = ChatUtils.parseColourCodes(getConfig().getString("guiTitle"));
+        } else {
+            title = "Hats";
+        }
 
         int totalHats = hats.getKeys(false).size();
         int totalRows = (int) Math.ceil((float) totalHats / 9);
@@ -85,7 +92,7 @@ public final class Hats extends JavaPlugin {
         if(totalPages == 0){ totalPages = 1; }
 
         for(int i = 1; i <= totalPages; i++){
-            HatGUI gui = new HatGUI(54, i, totalPages);
+            HatGUI gui = new HatGUI(54, i, totalPages, title);
             hatGUIS.put(i, gui);
         }
 
@@ -166,24 +173,68 @@ public final class Hats extends JavaPlugin {
         }
     }
 
-    public FileConfiguration getPlayersConfig() {
-        return playersConfig;
+    public void removeFunction(Player player){
+        // Remove Player Hat
+        if(Hats.getPlugin().getPlayersConfig().getBoolean("players." + player.getUniqueId() + ".hat")){
+            player.getInventory().setHelmet(new ItemStack(Material.AIR));
+            Hats.getPlugin().getPlayersConfig().set("players." + player.getUniqueId() + ".hat", false);
+            Hats.getPlugin().getPlayersConfig().set("players." + player.getUniqueId() + ".hatKey", "null");
+            Hats.getPlugin().saveConfig();
+            if(!Hats.getPlugin().getConfig().getString("hatRemoved").equals("")){
+                String message = Hats.getPlugin().getConfig().getString("hatRemoved");
+                message = ChatUtils.parseColourCodes(message);
+                player.sendMessage(message);
+                player.closeInventory();
+            }
+        } else {
+            if(!Hats.getPlugin().getConfig().getString("errorRemove").equals("")){
+                String message = Hats.getPlugin().getConfig().getString("errorRemove");
+                message = ChatUtils.parseColourCodes(message);
+                player.sendMessage(message);
+                player.closeInventory();
+            }
+        }
     }
 
-    public static <T> List<T> convertArrayToList(T array[])
-    {
-
-        // Create an empty List
-        List<T> list = new ArrayList<>();
-
-        // Iterate through the array
-        for (T t : array) {
-            // Add each element into the list
-            list.add(t);
+    public void backFunction(Player player, int totalPages){
+        // Go back a page
+        UUID puuid = player.getUniqueId();
+        int page = 1;
+        page = Hats.playerPages.get(puuid);
+        if(!(page <= 1)){
+            page -= 1;
+        } else {
+            page = totalPages;
         }
+        Hats.playerPages.remove(puuid);
+        Hats.playerPages.put(puuid, page);
+        player.closeInventory();
+        Hats.hatGUIS.get(page).open(player);
+    }
 
-        // Return the converted List
-        return list;
+    public void closeFunction(Player player){
+        Hats.playerPages.remove(player.getUniqueId());
+        player.closeInventory();
+    }
+
+    public void nextFunction(Player player, int totalPages){
+        // Go to next page
+        UUID puuid = player.getUniqueId();
+        int page = 1;
+        page = Hats.playerPages.get(puuid);
+        if(!(page >= totalPages)){
+            page += 1;
+        } else {
+            page = 1;
+        }
+        Hats.playerPages.remove(puuid);
+        Hats.playerPages.put(puuid, page);
+        player.closeInventory();
+        Hats.hatGUIS.get(page).open(player);
+    }
+
+    public FileConfiguration getPlayersConfig() {
+        return playersConfig;
     }
 
     public static Map<UUID, Integer> getPlayerPages() {
