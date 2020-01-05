@@ -35,7 +35,7 @@ guiTitle: "Hats"
 #     material: Set this to the item in all caps for example: PURPLE_STAINED_GLASS_PANE or AIR to set it to nothing
 #     displayName: Set this to the display name you want on the item. Set to "" to have the normal name.
 #     lore: Set this to a list of the lore you want. Every different line you want must be seperated by a ; ie. This is some great lore;This is really some great lore!. Set to "" to have no lore.
-#     job: Set this to either REMOVE, BACK, FORWARD, or CLOSE to set the action you want the item to have. Set to null if they have no action. They can only be used once. Description continued below.
+#     job: Set this to either REMOVE, BACK, FORWARD, or CLOSE to set the action you want the item to have. Set to null if they have no action. Description continued below.
 #     REMOVE is the button to remove a hat. BACK and FORWARD are their respective navigation button and CLOSE closes the menu.
 
 nav:
@@ -48,12 +48,12 @@ nav:
     material: PURPLE_STAINED_GLASS_PANE
     displayName: "Hats Menu"
     lore: ""
-    job: null
+    job: ""
   3:
     material: PURPLE_STAINED_GLASS_PANE
     displayName: "Hats Menu"
     lore: ""
-    job: null
+    job: ""
   4:
     material: ARROW
     displayName: "<< Previous Page"
@@ -73,17 +73,17 @@ nav:
     material: PURPLE_STAINED_GLASS_PANE
     displayName: "Hats Menu"
     lore: ""
-    job: null
+    job: ""
   8:
     material: PURPLE_STAINED_GLASS_PANE
     displayName: "Hats Menu"
     lore: ""
-    job: null
+    job: ""
   9:
     material: PURPLE_STAINED_GLASS_PANE
     displayName: "Hats Menu"
     lore: ""
-    job: null
+    job: ""
 
 # Hats: These will be displayed in the /hats menu.
 # Format:

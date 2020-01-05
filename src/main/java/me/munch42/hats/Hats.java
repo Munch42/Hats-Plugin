@@ -39,11 +39,12 @@ public final class Hats extends JavaPlugin {
             saveResource("players.yml", false);
         }
 
+        plugin = this;
+
         loadListeners();
         loadCommands();
         loadGUIs();
         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Hats] Hats version: " + getDescription().getVersion() + " is now enabled!");
-        plugin = this;
     }
 
     public void saveConfig(){

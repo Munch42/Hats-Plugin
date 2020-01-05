@@ -58,12 +58,11 @@ public class BaseHatGUI {
         inventoriesByUUID.remove(getUuid());
     }
 
-    public void addItemFromNavConfig(int slot, int i, int page, int totalPages){
+    public ItemStack getItemFromNavConfig(int slot, int page, int totalPages){
         ItemStack item = new ItemStack(Material.getMaterial(Hats.getPlugin().getConfig().getString("nav." + slot + ".material")));
 
         if(item.getType().equals(Material.AIR)){
-            setItem(i, item);
-            return;
+            return item;
         }
 
         ItemMeta meta = item.getItemMeta();
@@ -84,25 +83,8 @@ public class BaseHatGUI {
         }
 
         item.setItemMeta(meta);
-        if(Hats.getPlugin().getConfig().getString("nav." + slot + ".lore").equals("null")){
-            setItem(i, item);
-        } else if(Hats.getPlugin().getConfig().getString("nav." + slot + ".lore").equals("REMOVE")){
-            setItem(i, item, player -> {
-                Hats.getPlugin().removeFunction(player);
-            });
-        } else if(Hats.getPlugin().getConfig().getString("nav." + slot + ".lore").equals("BACK")){
-            setItem(i, item, player -> {
-                Hats.getPlugin().backFunction(player, totalPages);
-            });
-        } else if(Hats.getPlugin().getConfig().getString("nav." + slot + ".lore").equals("FORWARD")){
-            setItem(i, item, player -> {
-                Hats.getPlugin().nextFunction(player, totalPages);
-            });
-        } else if(Hats.getPlugin().getConfig().getString("nav." + slot + ".lore").equals("CLOSE")){
-            setItem(i, item, player -> {
-                Hats.getPlugin().closeFunction(player);
-            });
-        }
+
+        return item;
     }
 
     public static Map<UUID, BaseHatGUI> getInventoriesByUUID() {
