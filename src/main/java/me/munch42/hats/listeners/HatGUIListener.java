@@ -2,6 +2,7 @@ package me.munch42.hats.listeners;
 
 import me.munch42.hats.Hats;
 import me.munch42.hats.inventories.BaseHatGUI;
+import me.munch42.hats.utils.ChatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -54,9 +55,17 @@ public class HatGUIListener implements Listener {
         Player p = (Player) event.getPlayer();
         UUID playerUUID = p.getUniqueId();
 
+        String title;
+
+        if(!plugin.getConfig().getString("guiTitle").equals("")){
+            title = ChatUtils.parseColourCodes(plugin.getConfig().getString("guiTitle"));
+        } else {
+            title = "Hats";
+        }
+
         BaseHatGUI.openInventories.remove(playerUUID);
         if(p.getOpenInventory() != null){
-            if(!p.getOpenInventory().getTitle().equals("Hats")){
+            if(!p.getOpenInventory().getTitle().equals(title)){
                 Hats.playerPages.remove(playerUUID);
             }
         } else {
