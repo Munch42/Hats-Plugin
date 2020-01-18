@@ -12,7 +12,9 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -97,8 +99,6 @@ public final class Hats extends JavaPlugin {
             hatGUIS.put(i, gui);
         }
 
-        // Problem may be that it goes through on 1 page and then loops through the same items again for the second page.
-
         int hatsDone = 0;
         int onPage = 1;
         HatGUI gui = hatGUIS.get(onPage);
@@ -127,14 +127,62 @@ public final class Hats extends JavaPlugin {
 
             item.setItemMeta(meta);
 
+            //System.out.println(hats.getString(key + ".job"));
+
+            /*if(hats.getString(key + ".job") != null){
+                boolean blank = false;
+                String job = hats.getString(key + ".job");
+                System.out.println(job);
+
+                switch (job) {
+                    case "":
+                        blank = true;
+                        System.out.println("Blank");
+                        break;
+                    case "REMOVE":
+                        gui.setItem(hatsDone, item, player -> {
+                            Hats.getPlugin().removeFunction(player);
+                        });
+                        System.out.println("Remove");
+                        break;
+                    case "BACK":
+                        int finalTotalPages = totalPages;
+                        gui.setItem(hatsDone, item, player -> {
+                            Hats.getPlugin().backFunction(player, finalTotalPages);
+                        });
+                        System.out.println("Back");
+                        break;
+                    case "FORWARD":
+                        int finalTotalPages1 = totalPages;
+                        gui.setItem(hatsDone, item, player -> {
+                            Hats.getPlugin().nextFunction(player, finalTotalPages1);
+                        });
+                        System.out.println("Forward");
+                        break;
+                    case "CLOSE":
+                        gui.setItem(hatsDone, item, player -> {
+                            Hats.getPlugin().closeFunction(player);
+                        });
+                        System.out.println("Close");
+                        break;
+                }
+                if(!blank){
+                    continue;
+                }
+            }*/
+
+            //System.out.println("Past should be?: " + hats.getString(key + ".job"));
             gui.setItem(hatsDone, item, player -> {
+                //System.out.println("Past should be2?: " + hats.getString(key + ".job"));
                 if(player.getInventory().getHelmet() != null){
-                    if(!getConfig().getString("wearingHatMessage").equals("")){
-                        String message = getConfig().getString("wearingHatMessage");
-                        message = ChatUtils.parseColourCodes(message);
-                        player.sendMessage(message);
+                    if(!getPlayersConfig().getBoolean("players." + player.getUniqueId() + ".hat")){
+                        if(!getConfig().getString("wearingHatMessage").equals("")){
+                            String message = getConfig().getString("wearingHatMessage");
+                            message = ChatUtils.parseColourCodes(message);
+                            player.sendMessage(message);
+                        }
+                        return;
                     }
-                    return;
                 }
                 if(!hats.getString(key + ".permission").equals("")){
                     if(player.hasPermission(hats.getString( key + ".permission"))){
@@ -156,6 +204,10 @@ public final class Hats extends JavaPlugin {
     }
 
     private void equipHelmet(ItemStack item, Player player, String key){
+        ItemMeta meta = item.getItemMeta();
+        meta.setUnbreakable(true);
+        meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+        item.setItemMeta(meta);
         player.getInventory().setHelmet(item);
         player.closeInventory();
         getPlayersConfig().set("players." + player.getUniqueId() + ".hat", true);
